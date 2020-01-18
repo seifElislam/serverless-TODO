@@ -7,12 +7,19 @@ plugins:
   - serverless-reqvalidator-plugin
   - serverless-aws-documentation
 
+package:
+  individually: true
+
 provider:
   name: aws
   runtime: nodejs8.10
 
   stage: ${opt:stage, 'dev'}
   region: ${opt:region, 'us-east-1'}
+
+  tracing:
+    lambda: true
+    apiGateway: true
 
   environment:
     TODO_TABLE: Todo-${self:provider.stage}
