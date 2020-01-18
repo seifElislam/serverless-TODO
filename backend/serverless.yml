@@ -37,10 +37,10 @@ custom:
     models:
       - name: GroupRequest
         contentType: application/json
-        schema: ${file(models/create-group-request.json)}
+        schema: ${file(validators/create-todo-request.json)}
       - name: ImageRequest
         contentType: application/json
-        schema: ${file(models/create-image-request.json)}
+        schema: ${file(validators/update-todo-request.json)}
 
 functions:
 
