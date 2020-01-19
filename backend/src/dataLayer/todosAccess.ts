@@ -33,5 +33,29 @@ export class TodosAccess {
       return result.Items as TodoItem[];
   }
 
+  async getTodo(id: string): Promise<TodoItem>{
+    const result = await this.docClient.query({
+        TableName: this.todosTable,
+        KeyConditionExpression: 'todoId = :todoId',
+        ExpressionAttributeValues:{
+            ':todoId': id
+        }
+    }).promise()
+
+    const item = result.Items[0];
+    return item as TodoItem;
+}
+
+async deleteTodo(todoId: string): Promise<void> {
+    this.docClient
+        .delete({
+            TableName: this.todosTable,
+            Key: {
+                todoId
+            },
+        })
+        .promise();
+}
+
 
 }

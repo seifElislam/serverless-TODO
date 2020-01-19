@@ -28,3 +28,11 @@ export async function createTodo(
         done: false,
   })
 }
+
+export async function deleteTodo(
+  todoId: string,
+): Promise<void> {
+  const todo = await todoAccess.getTodo(todoId);
+
+  todoAccess.deleteTodo(todo.todoId);
+}
