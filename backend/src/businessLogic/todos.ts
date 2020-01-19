@@ -4,7 +4,7 @@ import { TodoItem } from '../models/TodoItem'
 import { TodosAccess } from '../dataLayer/todosAccess'
 import { CreateTodoRequest } from '../requests/CreateTodoRequest'
 // import { UpdateTodoRequest } from '../requests/UpdateTodoRequest'
-import { parseUserId } from '../auth/utils'
+// import { parseUserId } from '../auth/utils'
 
 const todoAccess = new TodosAccess()
 

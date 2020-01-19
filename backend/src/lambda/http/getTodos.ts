@@ -5,7 +5,7 @@ import { getAllTodos } from "../../businessLogic/todos";
 import { parseUserId } from '../../auth/utils';
 import { createLogger } from '../../utils/logger';
 
-import { APIGatewayProxyEvent, APIGatewayProxyResult, APIGatewayProxyHandler } from 'aws-lambda'
+import { APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda'
 
 const logger = createLogger('getTodo');
 
