@@ -3,7 +3,7 @@ import * as uuid from 'uuid'
 import { TodoItem } from '../models/TodoItem'
 import { TodosAccess } from '../dataLayer/todosAccess'
 import { CreateTodoRequest } from '../requests/CreateTodoRequest'
-// import { UpdateTodoRequest } from '../requests/UpdateTodoRequest'
+import { UpdateTodoRequest } from '../requests/UpdateTodoRequest'
 // import { parseUserId } from '../auth/utils'
 
 const todoAccess = new TodosAccess()
@@ -35,4 +35,13 @@ export async function deleteTodo(
   const todo = await todoAccess.getTodo(todoId);
 
   todoAccess.deleteTodo(todo.todoId);
+}
+
+export async function updateTodo(
+  todoId: string,
+  updateTodoRequest: UpdateTodoRequest
+): Promise<void> {
+  const todo = await todoAccess.getTodo(todoId);
+
+  todoAccess.updateTodo(todo.todoId, updateTodoRequest);
 }
