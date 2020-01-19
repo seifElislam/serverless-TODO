@@ -23,7 +23,9 @@ export const handler= middy(async (event: APIGatewayProxyEvent): Promise<APIGate
   return {
     statusCode: 201,
     body: JSON.stringify({
-        newItem,
+      item :{
+        ...newItem,
+      }
     }),
 };
 })
