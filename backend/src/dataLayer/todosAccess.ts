@@ -77,4 +77,23 @@ async updateTodo(todoId:string, updatedTodo:UpdateTodoRequest){
       }).promise()
 }
 
+public async setAttachmentUrl(
+    todoId: string,
+    attachmentUrl: string,
+): Promise<void> {
+    this.docClient
+        .update({
+            TableName: this.todosTable,
+            Key: {
+                todoId
+            },
+            UpdateExpression: 'set attachmentUrl = :attachmentUrl',
+            ExpressionAttributeValues: {
+                ':attachmentUrl': attachmentUrl,
+            },
+            ReturnValues: 'UPDATED_NEW',
+        })
+        .promise();
+}
+
 }

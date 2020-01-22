@@ -45,3 +45,12 @@ export async function updateTodo(
 
   todoAccess.updateTodo(todo.todoId, updateTodoRequest);
 }
+
+export async function setAttachmentUrl(
+  todoId: string,
+  attachmentUrl: string,
+): Promise<void> {
+  const todo = await todoAccess.getTodo(todoId);
+
+  todoAccess.setAttachmentUrl(todo.todoId, attachmentUrl);
+}
