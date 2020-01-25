@@ -15,7 +15,7 @@ provider:
   runtime: nodejs12.x
 
   stage: ${opt:stage, 'dev'}
-  region: ${opt:region, 'us-east-1'}
+  region: ${opt:region, 'us-east-2'}
 
   tracing:
     lambda: true
@@ -24,7 +24,7 @@ provider:
   environment:
     TODO_TABLE: Todo-${self:provider.stage}
     INDEX_NAME: userId
-    IMAGES_S3_BUCKET: todos-attachments-bucket2-${self:provider.stage}
+    IMAGES_S3_BUCKET: todos-attachments-bucket-${self:provider.stage}
     SIGNED_URL_EXPIRATION: 300
 
 custom:
