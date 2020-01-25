@@ -169,6 +169,15 @@ functions:
           - xray:PutTraceSegments
         Resource: "*"
 
+  SyncWithElasticsearch:
+    environment:
+      ES_ENDPOINT: !GetAtt TodoSearch.DomainEndpoint
+    handler: src/lambda/dynamoDb/elasticSearchSync.handler
+    events:
+      - stream:
+          type: dynamodb
+          arn: !GetAtt TodoDynamoDbTable.StreamArn
+
 resources:
   Resources:
     RequestBodyValidator:
@@ -239,7 +248,7 @@ resources:
       Type: AWS::Elasticsearch::Domain
       Properties:
         ElasticsearchVersion: '6.3'
-        DomainName: Todo-search-${self:provider.stage}
+        DomainName: todo-search-${self:provider.stage}
         ElasticsearchClusterConfig:
           DedicatedMasterEnabled: false
           InstanceCount: '1'
