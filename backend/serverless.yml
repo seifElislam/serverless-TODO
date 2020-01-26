@@ -169,6 +169,27 @@ functions:
           - xray:PutTraceSegments
         Resource: "*"
 
+  SearchTodo:
+    environment:
+      ES_ENDPOINT: !GetAtt TodoSearch.DomainEndpoint
+    handler: src/lambda/http/searchTodo.handler
+    events:
+      - http:
+          method: get
+          path: todos/search/{dueDate}
+          cors: true
+          authorizer: Auth
+    iamRoleStatements:
+      - Effect: Allow
+        Action:
+          - es:*
+        Resource: '*'
+      - Effect: "Allow"
+        Action:
+          - xray:PutTelemetryRecords
+          - xray:PutTraceSegments
+        Resource: "*"
+
   SyncWithElasticsearch:
     environment:
       ES_ENDPOINT: !GetAtt TodoSearch.DomainEndpoint
