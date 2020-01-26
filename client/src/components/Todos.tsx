@@ -14,7 +14,7 @@ import {
   Loader
 } from 'semantic-ui-react'
 
-import { createTodo, deleteTodo, getTodos, patchTodo } from '../api/todos-api'
+import { createTodo, deleteTodo, getTodos, patchTodo, searchTodos } from '../api/todos-api'
 import Auth from '../auth/Auth'
 import { Todo } from '../types/Todo'
 
@@ -26,18 +26,24 @@ interface TodosProps {
 interface TodosState {
   todos: Todo[]
   newTodoName: string
-  loadingTodos: boolean
+  loadingTodos: boolean,
+  searchFiler: string
 }
 
 export class Todos extends React.PureComponent<TodosProps, TodosState> {
   state: TodosState = {
     todos: [],
     newTodoName: '',
-    loadingTodos: true
+    loadingTodos: true,
+    searchFiler: ''
   }
 
   handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     this.setState({ newTodoName: event.target.value })
+  }
+
+  handleSearchFilter = (event: React.ChangeEvent<HTMLInputElement>) => {
+    this.setState({ searchFiler: event.target.value })
   }
 
   onEditButtonClick = (todoId: string) => {
@@ -68,6 +74,25 @@ export class Todos extends React.PureComponent<TodosProps, TodosState> {
       })
     } catch {
       alert('Todo deletion failed')
+    }
+  }
+
+  onSearchTodo = async (event: React.ChangeEvent<HTMLButtonElement>)  => {
+    try {
+      let searchResult:Todo[] = []
+      if (this.state.searchFiler){
+         searchResult = await searchTodos(this.props.auth.getIdToken(), this.state.searchFiler)
+      }
+      else{
+        searchResult = await getTodos(this.props.auth.getIdToken())
+      }
+      
+      this.setState({
+        todos: searchResult,
+        loadingTodos: false
+      })
+    } catch (e) {
+      alert(`Todo search failed: ${e.message}` )
     }
   }
 
@@ -106,8 +131,9 @@ export class Todos extends React.PureComponent<TodosProps, TodosState> {
       <div>
         <Header as="h1">TODOs</Header>
 
+       
+        {this.renderSearchTodo()}
         {this.renderCreateTodoInput()}
-
         {this.renderTodos()}
       </div>
     )
@@ -129,6 +155,31 @@ export class Todos extends React.PureComponent<TodosProps, TodosState> {
             actionPosition="left"
             placeholder="To change the world..."
             onChange={this.handleNameChange}
+          />
+        </Grid.Column>
+        <Grid.Column width={16}>
+          <Divider />
+        </Grid.Column>
+      </Grid.Row>
+    )
+  }
+
+  renderSearchTodo() {
+    return (
+      <Grid.Row>
+        <Grid.Column width={16}>
+          <Input
+            action={{
+              color: 'teal',
+              labelPosition: 'left',
+              icon: 'search',
+              content: 'Search',
+              onClick:this.onSearchTodo
+            }}
+            fluid
+            actionPosition="left"
+            placeholder="Search Todos by dueDate yyyy-mm-dd"
+            onChange={this.handleSearchFilter}
           />
         </Grid.Column>
         <Grid.Column width={16}>
@@ -207,7 +258,7 @@ export class Todos extends React.PureComponent<TodosProps, TodosState> {
 
   calculateDueDate(): string {
     const date = new Date()
-    date.setDate(date.getDate() + 7)
+    date.setDate(date.getDate() + 10)
 
     return dateFormat(date, 'yyyy-mm-dd') as string
   }
